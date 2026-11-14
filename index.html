@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11130f">
+  <title>THE CORDYCEPS FILES — Field guide to infection</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #e6e1d4;
+      --muted: #a7a493;
+      --paper: #171a15;
+      --panel: #20231c;
+      --line: #44473b;
+      --moss: #a5a66a;
+      --rust: #b96048;
+      --gold: #d3b77b;
+      --display: Calibri, "Segoe UI", sans-serif;
+      --body: "Calibri Light", Calibri, "Segoe UI Light", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 75% 4%, rgba(119, 111, 65, .12), transparent 34rem),
+        var(--paper);
+      font: 300 16px/1.65 var(--body);
+    }
+    a { color: var(--gold); }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    .wrap { width: min(1120px, calc(100% - 44px)); margin-inline: auto; }
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--moss);
+      font-size: .73rem;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+    .topbar {
+      position: absolute;
+      z-index: 3;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px max(22px, calc((100% - 1120px) / 2));
+      border-bottom: 1px solid rgba(230, 225, 212, .16);
+    }
+    .brand {
+      color: var(--ink);
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .19em;
+      text-decoration: none;
+    }
+    .nav { display: flex; gap: 25px; }
+    .nav a {
+      color: var(--ink);
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      opacity: .8;
+    }
+    .nav a:hover, .nav a:focus-visible { color: var(--gold); opacity: 1; }
+
+    .hero {
+      min-height: 700px;
+      display: grid;
+      align-items: end;
+      position: relative;
+      overflow: hidden;
+      padding: 160px 0 88px;
+      background:
+        linear-gradient(90deg, rgba(13, 16, 13, .96) 0%, rgba(13, 16, 13, .78) 44%, rgba(13, 16, 13, .16) 100%),
+        linear-gradient(0deg, var(--paper) 0%, transparent 36%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 800'%3E%3Crect width='1000' height='800' fill='%231a2018'/%3E%3Cpath d='M620 800Q630 580 550 400Q490 280 548 100M685 800Q700 560 670 360Q650 200 730 0M800 800Q760 620 840 430Q900 260 875 80' fill='none' stroke='%23585d42' stroke-width='13' opacity='.6'/%3E%3Cg fill='%23aaa16d' opacity='.65'%3E%3Cellipse cx='549' cy='120' rx='8' ry='45' transform='rotate(-25 549 120)'/%3E%3Cellipse cx='731' cy='80' rx='9' ry='52' transform='rotate(22 731 80)'/%3E%3Cellipse cx='873' cy='120' rx='8' ry='42' transform='rotate(-12 873 120)'/%3E%3C/g%3E%3Cpath d='M0 620Q200 530 370 635T700 620T1000 570V800H0Z' fill='%23111611'/%3E%3C/svg%3E");
+      background-size: cover;
+      background-position: center;
+    }
+    .hero-copy { max-width: 700px; }
+    h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.08; }
+    h1 { margin: 0 0 24px; font-size: clamp(3.2rem, 8vw, 6.7rem); letter-spacing: -.045em; }
+    h1 span { color: var(--moss); font-style: italic; }
+    .hero p:not(.eyebrow) { max-width: 590px; color: #d0cbbb; font-size: 1.1rem; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 21px;
+      padding: 12px 19px;
+      border: 1px solid var(--moss);
+      color: var(--ink);
+      background: rgba(165, 166, 106, .12);
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background .2s ease;
+    }
+    .button:hover { background: rgba(165, 166, 106, .27); }
+    .hero-stamp {
+      position: absolute;
+      right: max(22px, calc((100% - 1120px) / 2));
+      bottom: 112px;
+      color: rgba(230, 225, 212, .65);
+      font-size: .68rem;
+      letter-spacing: .18em;
+      writing-mode: vertical-rl;
+    }
+    main section { padding: 104px 0; border-top: 1px solid rgba(230, 225, 212, .12); }
+    .section-head { max-width: 670px; margin-bottom: 47px; }
+    h2 { margin: 0 0 20px; font-size: clamp(2.4rem, 5vw, 4rem); }
+    h3 { margin: 0 0 12px; font-size: 1.65rem; }
+    .lead { color: #c1bdad; font-size: 1.06rem; }
+    .note {
+      padding: 16px 19px;
+      border-left: 2px solid var(--rust);
+      color: #d0cbbb;
+      background: rgba(185, 96, 72, .08);
+      font-size: .91rem;
+    }
+    .real-grid, .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .infection-card {
+      display: grid;
+      grid-template-columns: minmax(110px, 150px) minmax(0, 1fr);
+      align-items: start;
+      gap: 18px;
+      padding: 18px;
+    }
+    .infected-portrait {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border: 1px solid var(--line);
+      background-image: url("assets/infection-stages-poster.jpg");
+      background-repeat: no-repeat;
+      background-size: 390% 390%;
+    }
+    .infected-portrait.runner { background-position: 5.8% 24.5%; }
+    .infected-portrait.stalker { background-position: 47.2% 24.5%; }
+    .infected-portrait.clicker { background-position: 87.2% 24.5%; }
+    .infected-portrait.bloater { background-position: 5.8% 74.3%; }
+    .infected-portrait.shambler { background-position: 47.2% 74.3%; }
+    .infected-portrait.rat-king { background-position: 87.2% 74.3%; }
+    .infection-card h3 { font-size: 1.45rem; }
+    .infection-card p { margin-bottom: 0; color: #c1bdad; }
+    .poster-credit { margin: 20px 0 0; color: var(--muted); font-size: .79rem; }
+    .runner-image {
+      margin: 0 0 25px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #171a15;
+    }
+    .runner-image img {
+      display: block;
+      width: 100%;
+      max-height: 510px;
+      object-fit: contain;
+      background: #171a15;
+    }
+    .card { padding: 27px; border: 1px solid var(--line); background: rgba(32, 35, 28, .76); }
+    .card p { margin-bottom: 0; color: #c1bdad; }
+    .tag {
+      display: inline-block;
+      margin-bottom: 17px;
+      padding: 4px 8px;
+      border: 1px solid rgba(165, 166, 106, .5);
+      color: var(--moss);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .compare {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(260px, .8fr);
+      gap: 45px;
+      align-items: center;
+    }
+    .fungus-art {
+      min-height: 330px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: linear-gradient(160deg, #303329, #161914 70%);
+    }
+    .fungus-art img { display: block; width: 100%; min-height: 330px; max-height: 430px; object-fit: cover; }
+    .caption { margin-top: 10px; color: var(--muted); font-size: .76rem; }
+
+    .route { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); position: relative; margin: 32px 0 55px; }
+    .route::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      top: 17px;
+      left: 9%;
+      right: 9%;
+      height: 1px;
+      background: var(--line);
+    }
+    .route-button {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 0 5px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: .7rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .route-button .dot {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: var(--paper);
+      color: var(--moss);
+      font-family: var(--display);
+      font-size: .9rem;
+      transition: .2s ease;
+    }
+    .route-button[aria-current="step"] { color: var(--ink); }
+    .route-button[aria-current="step"] .dot { border-color: var(--moss); background: #333628; box-shadow: 0 0 22px rgba(165,166,106,.2); }
+    .stage-view { display: grid; grid-template-columns: .9fr 1.1fr; gap: 35px; align-items: stretch; }
+    .stage-image {
+      min-height: 345px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: radial-gradient(ellipse at center, #444537, #1a1d17 67%);
+    }
+    .stage-image svg { width: 80%; max-height: 320px; }
+    .stage-image svg[hidden] { display: none; }
+    .stage-portrait { width: min(78%, 250px); }
+    .exposure-art {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      padding: 14px;
+    }
+    .exposure-art[hidden] { display: none; }
+    .exposure-art figure { min-width: 0; margin: 0; }
+    .exposure-art img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border: 1px solid var(--line);
+    }
+    .exposure-art figcaption { margin-top: 8px; color: var(--muted); font-size: .73rem; line-height: 1.4; }
+    .stage-copy { padding: 25px 0; }
+    .stage-index { color: var(--rust); font-size: .75rem; font-weight: 700; letter-spacing: .2em; }
+    .stage-copy p { color: #c1bdad; }
+    .stage-copy .caveat { padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
+    .control-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .pill {
+      padding: 9px 14px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: .77rem;
+      letter-spacing: .04em;
+    }
+    .pill[aria-pressed="true"] { border-color: var(--moss); color: var(--ink); background: rgba(165,166,106,.12); }
+    .route-extra { margin-top: 28px; }
+
+    .hospital {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(15,17,15,.98), rgba(15,17,15,.84) 64%, rgba(15,17,15,.74)),
+        repeating-linear-gradient(0deg, transparent 0 43px, rgba(230,225,212,.035) 44px 45px);
+    }
+    .hospital-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .record {
+      padding: 24px;
+      border: 1px solid #525147;
+      background: rgba(27,29,25,.75);
+    }
+    .record .eyebrow { color: var(--rust); }
+    .record p { color: #c1bdad; }
+    .spoiler { margin-top: 25px; color: var(--muted); font-size: .82rem; }
+    .spoiler summary { color: var(--gold); cursor: pointer; }
+
+    .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .gallery-card { border: 1px solid var(--line); background: var(--panel); }
+    .gallery-preview {
+      aspect-ratio: 16 / 9;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #3c4032, #1a1c17 60%, #553d32);
+    }
+    .gallery-preview::before {
+      content: "";
+      position: absolute;
+      width: 38%;
+      height: 85%;
+      left: 31%;
+      bottom: -16%;
+      border-radius: 48% 48% 0 0;
+      background: linear-gradient(90deg, #151713, #303329 50%, #181a15);
+      filter: blur(1px);
+    }
+    .gallery-preview::after {
+      content: "";
+      position: absolute;
+      width: 50%;
+      height: 42%;
+      left: 23%;
+      top: 9%;
+      border-radius: 48%;
+      background: radial-gradient(ellipse, rgba(191,178,129,.25), transparent 68%);
+    }
+    .gallery-preview img { width: 100%; height: 100%; position: absolute; z-index: 1; object-fit: cover; }
+    .image-prompt { z-index: 2; padding: 9px 12px; border: 1px solid rgba(230,225,212,.35); background: rgba(17,19,15,.65); color: #ddd7c8; font-size: .73rem; text-align: center; }
+    .gallery-info { padding: 19px; }
+    .gallery-info h3 { font-size: 1.3rem; }
+    .gallery-info p { margin: 0 0 13px; color: var(--muted); font-size: .82rem; }
+    .image-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .image-controls label, .image-controls a {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      color: var(--gold);
+      font-size: .72rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .image-controls input[type="file"] { display: none; }
+    .image-url { width: 100%; display: flex; gap: 7px; margin-top: 8px; }
+    .image-url input {
+      min-width: 0;
+      flex: 1;
+      padding: 8px;
+      border: 1px solid var(--line);
+      background: #151712;
+      color: var(--ink);
+      font-size: .74rem;
+    }
+    .image-url button {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: .72rem;
+    }
+    .gallery-note { margin-top: 17px; color: var(--muted); font-size: .81rem; }
+    .sources { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 35px; padding: 0; list-style: none; }
+    .sources li { padding: 13px 0; border-bottom: 1px solid var(--line); font-size: .88rem; }
+    .sources span { display: block; color: var(--muted); font-size: .77rem; }
+    footer { padding: 35px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: .75rem; }
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+    @media (max-width: 760px) {
+      .nav { gap: 12px; }
+      .nav a { font-size: .64rem; }
+      .hero { min-height: 650px; }
+      .hero-stamp { display: none; }
+      main section { padding: 76px 0; }
+      .real-grid, .feature-grid, .compare, .stage-view, .hospital-grid, .gallery-grid { grid-template-columns: 1fr; }
+      .compare { gap: 25px; }
+      .stage-image { min-height: 260px; }
+      .route { overflow-x: auto; grid-template-columns: repeat(7, minmax(78px, 1fr)); }
+      .route-button { font-size: .58rem; }
+      .route-button .dot { width: 30px; height: 30px; }
+    }
+    @media (max-width: 480px) {
+      .wrap { width: min(100% - 32px, 1120px); }
+      .topbar { padding: 17px 16px; }
+      .brand { font-size: .65rem; }
+      .nav { gap: 9px; }
+      .nav a { letter-spacing: .04em; font-size: .56rem; }
+      .hero { min-height: 600px; }
+      .route-button { letter-spacing: 0; font-size: .51rem; }
+      .infection-card { grid-template-columns: 96px minmax(0, 1fr); gap: 12px; padding: 14px; }
+      .infection-card h3 { font-size: 1.3rem; }
+      .sources { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top">THE CORDYCEPS FILES</a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#real">The real fungus</a>
+      <a href="#stages">Stages</a>
+      <a href="#hospital">Hospital file</a>
+      <a href="#gallery">Images</a>
+    </nav>
+  </header>
+
+  <header class="hero" id="top">
+    <div class="wrap hero-copy">
+      <p class="eyebrow">A field guide · real biology / game fiction</p>
+      <h1>One fungus<br><span>Two very different</span><br>stories</h1>
+      <p>Follow the trail from a remarkable ant parasite in nature to the imagined Cordyceps infection of <em>The Last of Us</em>—and explore how the infected change over time.</p>
+      <a class="button" href="#real">Begin the field report <span aria-hidden="true">↓</span></a>
+    </div>
+    <div class="hero-stamp" aria-hidden="true">FIELD NOTE 01 / SPOILERS AHEAD</div>
+  </header>
+
+  <main>
+    <section id="real">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">01 — The natural world</p>
+          <h2>First, the fungus that is real</h2>
+          <p class="lead"><em>Ophiocordyceps unilateralis</em> is a real parasitic fungus that infects certain carpenter ants. It is not the fungus from the game, and it does not infect people or turn them into zombies.</p>
+        </div>
+        <div class="compare">
+          <div>
+            <div class="real-grid">
+              <article class="card">
+                <span class="tag">Real biology</span>
+                <h3>A specialist parasite</h3>
+                <p>In tropical forests, spores can attach to a suitable ant and germinate. The fungus grows through the insect's body. This host relationship is highly specific; it is not a general infection risk in everyday human life.</p>
+              </article>
+              <article class="card">
+                <span class="tag">The “zombie ant” behavior</span>
+                <h3>A final climb</h3>
+                <p>Infected ants may leave their usual trails, climb vegetation, and clamp their mandibles onto a leaf or twig. After the ant dies, the fungus grows a stalk from its body and releases spores that can reach other ants.</p>
+              </article>
+              <article class="card">
+                <span class="tag">The real life cycle</span>
+                <h3>From spore to spore</h3>
+                <p>A spore landing on a suitable ant can germinate, penetrate its outer covering, and grow through its body. The infected ant may climb and bite onto vegetation before dying. A fungal stalk then grows from the cadaver and produces spores, continuing the cycle among susceptible ants.</p>
+              </article>
+              <article class="card">
+                <span class="tag">The game connection</span>
+                <h3>Inspiration, not a human disease</h3>
+                <p><em>The Last of Us</em> borrows the striking idea of a fungus altering an animal host’s behavior and spreading spores. It fictionalizes that idea into a human brain infection transmitted by bites and inhaled spores, with rapidly changing infected forms. The real ant fungus does none of this to people.</p>
+              </article>
+            </div>
+            <p class="note" style="margin-top:22px"><strong>Reality check:</strong> scientists have documented striking behavior changes in infected ants, but the precise mechanisms are still being studied. This is a specialized host-parasite relationship—not a fungus consciously controlling a human mind.</p>
+          </div>
+          <figure style="margin:0">
+            <div class="fungus-art">
+              <img src="assets/real-infected-ant.webp" alt="Carpenter ant infected by Ophiocordyceps unilateralis, photographed in Jalisco, Mexico">
+            </div>
+            <figcaption class="caption">Photo: Francisco Guasco / EFE, CUCBA at the University of Guadalajara. <a href="https://efe.com/english/science-and-technology/2026-08-14/six-zombie-fungi-discovered-in-mexico/" target="_blank" rel="noopener noreferrer">Source article</a>.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="stages">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">02 — The fictional outbreak</p>
+          <h2>Trace the infection</h2>
+          <p class="lead">In the games, infection spreads through bites and airborne spores. Select a stage to follow the transformation and view the matching infected portrait.</p>
+        </div>
+
+        <div class="route" role="group" aria-label="Select an infection stage">
+          <button class="route-button" type="button" data-stage="0" aria-current="step"><span class="dot">01</span>Exposure</button>
+          <button class="route-button" type="button" data-stage="1"><span class="dot">02</span>Runner</button>
+          <button class="route-button" type="button" data-stage="2"><span class="dot">03</span>Stalker</button>
+          <button class="route-button" type="button" data-stage="3"><span class="dot">04</span>Clicker</button>
+          <button class="route-button" type="button" data-stage="4"><span class="dot">05</span>Bloater</button>
+          <button class="route-button" type="button" data-stage="5"><span class="dot">06</span>Shambler</button>
+          <button class="route-button" type="button" data-stage="6"><span class="dot">07</span>Rat King</button>
+        </div>
+
+        <div class="stage-view" aria-live="polite">
+          <div class="stage-image" id="stage-art" role="group" aria-label="Bite and airborne spore infection routes">
+            <div class="exposure-art" id="stage-exposure-art">
+              <figure>
+                <img src="assets/exposure-bite.webp" alt="Ellie's bite wound from The Last of Us">
+                <figcaption>Bite · <a href="https://thelastofus.fandom.com/wiki/Infected" target="_blank" rel="noopener noreferrer">The Last of Us Wiki</a></figcaption>
+              </figure>
+              <figure>
+                <img src="assets/exposure-spores.jpg" alt="Airborne spores in The Last of Us">
+                <figcaption>Airborne spores · <a href="https://hgp.hypotheses.org/1545" target="_blank" rel="noopener noreferrer">Hypotheses</a></figcaption>
+              </figure>
+            </div>
+            <div class="infected-portrait stage-portrait" id="stage-portrait" role="img" aria-label="" hidden></div>
+          </div>
+          <article class="stage-copy">
+            <div class="stage-index" id="stage-number">FIELD NOTE 01</div>
+            <h3 id="stage-title">How infection spreads</h3>
+            <p id="stage-description">In the games, infection spreads through bites from infected and by inhaling airborne spores in contaminated spaces. Both are routes of Cordyceps infection.</p>
+            <p class="caveat" id="stage-caveat">This transmission and human Cordyceps infection are fictional; the real ant-infecting fungus does not spread to people this way.</p>
+          </article>
+        </div>
+
+        <div class="route-extra">
+          <p class="eyebrow">Exposure pathways</p>
+          <div class="control-row" role="group" aria-label="Choose an exposure pathway">
+            <button type="button" class="pill exposure-button" data-exposure="bite" aria-pressed="true">Bite / close contact</button>
+            <button type="button" class="pill exposure-button" data-exposure="spores" aria-pressed="false">Airborne spores</button>
+          </div>
+          <p class="lead" id="exposure-copy" style="max-width:740px;font-size:.95rem;margin-top:16px">Bites and airborne spores are the two infection routes shown in the games. In contaminated spaces, characters wear masks to avoid inhaling spores.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">03 — Signs of progression</p>
+          <h2>One infection, many outcomes</h2>
+          <p class="lead">This guide uses an approximate progression: runners last up to two weeks, stalkers from around two weeks to a few months, and clickers for up to a couple of years. After that, the infected may become a bloater or shambler depending on the environment. These are guide estimates, not official timers stated by the games.</p>
+        </div>
+        <figure class="runner-image">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyIhlOK8CatZ_NY6iDO_dbRwp80_52Q0qIcNROu4ChqA&amp;s=10" alt="The Last of Us game image supplied by the user">
+          <figcaption class="caption" style="padding:0 14px 12px">Game image supplied by you · displayed before the runner and later-stage field notes.</figcaption>
+        </figure>
+        <div class="feature-grid">
+          <article class="card infection-card">
+            <div class="infected-portrait runner" role="img" aria-label="Cropped Runner illustration from the supplied infection-stage poster"></div>
+            <div>
+              <span class="tag">Early infection</span>
+              <h3>Runners</h3>
+              <p>Runners are the earliest stage of the incubated infection. They remain fast and aggressive for up to two weeks. The games do not confirm whether runners remain consciously aware of their surroundings.</p>
+            </div>
+          </article>
+          <article class="card infection-card">
+            <div class="infected-portrait stalker" role="img" aria-label="Cropped Stalker illustration from the supplied infection-stage poster"></div>
+            <div>
+              <span class="tag">Intermediate</span>
+              <h3>Stalkers</h3>
+              <p>From about two weeks after infection until a couple of months, the infected remain in the Stalker stage. More visible fungal growth accompanies their hiding and ambush behavior; the original person no longer controls the body.</p>
+            </div>
+          </article>
+          <article class="card infection-card">
+            <div class="infected-portrait clicker" role="img" aria-label="Cropped Clicker illustration from the supplied infection-stage poster"></div>
+            <div>
+              <span class="tag">Advanced infection</span>
+              <h3>Clickers</h3>
+              <p>After the Stalker period, the infected becomes a Clicker. Clickers use clicking sounds to echolocate and find prey, and can remain at this stage for up to a couple of years before developing into a later form.</p>
+            </div>
+          </article>
+          <article class="card infection-card">
+            <div class="infected-portrait bloater" role="img" aria-label="Cropped Bloater illustration from the supplied infection-stage poster"></div>
+            <div>
+              <span class="tag">Years of growth</span>
+              <h3>Bloaters</h3>
+              <p>After the Clicker stage, a Bloater can develop in environments that favor this heavily armored fungal growth. Bloaters have thick fungal plates and can throw spore sacs. The games do not specify an exact time for this change.</p>
+            </div>
+          </article>
+          <article class="card infection-card">
+            <div class="infected-portrait shambler" role="img" aria-label="Cropped Shambler illustration from the supplied infection-stage poster"></div>
+            <div>
+              <span class="tag">Environmental variant</span>
+              <h3>Shamblers</h3>
+              <p>After the Clicker stage, a Shambler can develop in damp environments such as parts of Seattle. Shamblers release clouds of acidic fungal material. Like Bloaters, they are a late form; which one develops depends on the surrounding environment.</p>
+            </div>
+          </article>
+          <article class="card infection-card">
+            <div class="infected-portrait rat-king" role="img" aria-label="Cropped Rat King illustration from the supplied infection-stage poster"></div>
+            <div>
+              <span class="tag">Hospital anomaly</span>
+              <h3>The Rat King</h3>
+              <p>The Rat King is a fused mass of at least 20 infected that merged over almost a decade in Seattle's hospital basement. It is a rare cluster of infected, not a standard stage every person reaches. The games show the fused mass but do not state an exact count or how long the merging took.</p>
+            </div>
+          </article>
+        </div>
+        <p class="poster-credit">The six portraits above are crops from the poster you supplied. It was shared by <a href="https://www.facebook.com/groups/739077781573620/posts/1105706401577421/" target="_blank" rel="noopener noreferrer">Jason Oliva in a Facebook group post</a>; the original poster artist and image rights are not identified in that post.</p>
+        <p class="note" style="margin-top:25px"><strong>Timeline note:</strong> this is the approximate timeline used in this guide. Individual cases and environments can vary, and the games do not provide a precise clock for each stage.</p>
+      </div>
+    </section>
+
+    <section id="hospital" class="hospital">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">04 — Seattle hospital / spoiler warning</p>
+          <h2>The basement tells its own story</h2>
+          <p class="lead">Abby's descent beneath the hospital in <em>The Last of Us Part II</em> uses abandoned clinical spaces, environmental clues, and the WLF's aftermath to build dread. The record below separates what the scene establishes from what players infer.</p>
+        </div>
+        <div class="hospital-grid">
+          <article class="record">
+            <p class="eyebrow">What the location shows</p>
+            <h3>Isolation broke down</h3>
+            <p>The lower hospital is overrun and cut off from the safer, functioning areas above. Notes and traces of the failed response suggest that the sick were brought into the facility, but containment did not hold. Abby pushes deeper to find medical supplies for Yara.</p>
+          </article>
+          <article class="record">
+            <p class="eyebrow">What the encounter adds</p>
+            <h3>The Rat King is an outlier</h3>
+            <p>The hospital's oldest infected are presented as a fused mass of multiple bodies. The Rat King is a rare, horrifying result of long-term infection in a sealed environment—not a regular next stage every infected person reaches.</p>
+          </article>
+        </div>
+        <details class="spoiler">
+          <summary>Show the gameplay connection</summary>
+          <p>The descent ends in a boss encounter with the Rat King, followed by a separated stalker-like infected that breaks away from it. The game never gives a clinical, step-by-step explanation of the fusion, so it is best read as environmental horror rather than a universal biological rule.</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">05 — Visual archive</p>
+          <h2>Bring your field images</h2>
+          <p class="lead">Add your own in-game Photo Mode captures, or paste a direct image URL from a wiki page. Images you choose stay in this browser session; use the source field to credit the photographer or page.</p>
+        </div>
+        <div class="gallery-grid">
+          <article class="gallery-card">
+            <div class="gallery-preview" id="preview-camera">
+              <div class="image-prompt">PHOTO MODE CAPTURE<br>Choose a local image to display</div>
+            </div>
+            <div class="gallery-info">
+              <h3>Photo Mode · your capture</h3>
+              <p>Use a screenshot you captured in-game.</p>
+              <div class="image-controls">
+                <label for="file-camera">Choose image</label>
+                <input id="file-camera" type="file" accept="image/*" data-preview="preview-camera">
+              </div>
+              <div class="image-url">
+                <input id="source-camera" type="text" placeholder="Credit / source (optional)" aria-label="Photo Mode image credit">
+              </div>
+            </div>
+          </article>
+          <article class="gallery-card">
+            <div class="gallery-preview" id="preview-wiki">
+              <div class="image-prompt">WIKI IMAGE<br>Paste a direct image URL below</div>
+            </div>
+            <div class="gallery-info">
+              <h3>Wiki / community image</h3>
+              <p>Paste a direct image address and add its source credit.</p>
+              <div class="image-url">
+                <input id="url-wiki" type="url" placeholder="https://…/image.jpg" aria-label="Wiki image URL">
+                <button type="button" data-load-image="wiki">Load</button>
+              </div>
+              <div class="image-url">
+                <input id="source-wiki" type="text" placeholder="Wiki page / creator credit" aria-label="Wiki image credit">
+              </div>
+            </div>
+          </article>
+        </div>
+        <p class="gallery-note">Respect each image's license and attribution requirements. A wiki page URL is not always a direct image URL; open the file page and copy the image address. The built-in illustrations above are original decorative artwork.</p>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Further reading</p>
+          <h2>Sources &amp; boundaries</h2>
+          <p class="lead">The first section is about real fungal biology; the infected stages and transmission routes are fictional game lore.</p>
+        </div>
+        <ul class="sources">
+          <li><a href="https://doi.org/10.1186/1472-6785-11-13" target="_blank" rel="noopener noreferrer">Hughes et al. — Behavioral mechanisms and morphological symptoms of zombie ants</a><span>BMC Ecology · 2011 · real ant/fungus interaction</span></li>
+          <li><a href="https://doi.org/10.1126/science.1226686" target="_blank" rel="noopener noreferrer">Hughes et al. — Behavioral mechanisms and morphological symptoms of zombie ants</a><span>Science · 2012 · fungal manipulation research</span></li>
+          <li><a href="https://thelastofus.fandom.com/wiki/Infected" target="_blank" rel="noopener noreferrer">The Last of Us Wiki — Infected</a><span>Fan-maintained reference for game terminology; secondary source</span></li>
+          <li><a href="https://thelastofus.fandom.com/wiki/The_Descent" target="_blank" rel="noopener noreferrer">The Last of Us Wiki — The Descent</a><span>Fan-maintained reference for Abby's hospital chapter</span></li>
+          <li><a href="https://www.naughtydog.com/blog/the_last_of_us_part_ii_photo_mode" target="_blank" rel="noopener noreferrer">Naughty Dog — The Last of Us Part II Photo Mode</a><span>Official overview of the game's Photo Mode</span></li>
+          <li><a href="https://www.cdc.gov/fungal/about/index.html" target="_blank" rel="noopener noreferrer">CDC — About fungal diseases</a><span>General real-world context; no human Cordyceps outbreak</span></li>
+        </ul>
+        <p class="caption">Unofficial fan-made educational page. The Last of Us and its characters are the property of their respective rights holders. No game screenshots are bundled here.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">THE CORDYCEPS FILES · Fiction separated from field biology · Not medical advice</div>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var stages = [
+        {
+          title: "Bite or airborne spores",
+          description: "In the games, infection spreads through bites from infected and by inhaling airborne spores in contaminated spaces. Both are routes of Cordyceps infection.",
+          caveat: "This transmission and human Cordyceps infection are fictional; the real ant-infecting fungus does not spread to people this way.",
+          portrait: null
+        },
+        {
+          title: "Runners — early infection",
+          description: "Runners are the earliest stage of the incubated infection. They remain fast and aggressive for up to two weeks.",
+          caveat: "The games do not confirm whether runners remain consciously aware of their surroundings.",
+          portrait: "runner"
+        },
+        {
+          title: "Stalkers — two weeks to a few months",
+          description: "From around two weeks after infection until a couple of months, the infected remain in the Stalker stage. More visible fungal growth accompanies their hiding and ambush behavior.",
+          caveat: "At this point, the original person is dead and the fungus controls the body.",
+          portrait: "stalker"
+        },
+        {
+          title: "Clickers — up to a couple of years",
+          description: "After the Stalker period, the infected becomes a Clicker. Clickers use clicking sounds to echolocate and find prey, and can remain at this stage for up to a couple of years.",
+          caveat: "After the Clicker stage, the infected may develop into a Bloater or a Shambler depending on the surrounding environment.",
+          portrait: "clicker"
+        },
+        {
+          title: "Bloaters — environment-dependent growth",
+          description: "After the Clicker stage, a Bloater can develop in environments that favor this heavily armored fungal growth. Bloaters have thick fungal plates and can throw spore sacs.",
+          caveat: "The infected can instead become a Shambler in a different environment.",
+          portrait: "bloater"
+        },
+        {
+          title: "Shamblers — environment-dependent growth",
+          description: "After the Clicker stage, a Shambler can develop in damp environments such as parts of Seattle. Shamblers release clouds of acidic fungal material.",
+          caveat: "The infected can instead become a Bloater in a different environment.",
+          portrait: "shambler"
+        },
+        {
+          title: "The Rat King — a fused mass",
+          description: "The Rat King is a combination of at least 20 infected that merged over almost a decade in Seattle's hospital basement.",
+          caveat: "The game shows the fused mass but does not specify the exact number of infected or the time it took them to merge.",
+          portrait: "rat-king"
+        }
+      ];
+
+      var routeButtons = document.querySelectorAll(".route-button");
+      var stageTitle = document.getElementById("stage-title");
+      var stageDescription = document.getElementById("stage-description");
+      var stageCaveat = document.getElementById("stage-caveat");
+      var stageNumber = document.getElementById("stage-number");
+      var stageArt = document.getElementById("stage-art");
+      var stageExposureArt = document.getElementById("stage-exposure-art");
+      var stagePortrait = document.getElementById("stage-portrait");
+
+      function showStage(index) {
+        var stage = stages[index];
+        stageTitle.textContent = stage.title;
+        stageDescription.textContent = stage.description;
+        stageCaveat.textContent = stage.caveat;
+        stageNumber.textContent = "FIELD NOTE " + String(index + 1).padStart(2, "0");
+        if (stage.portrait) {
+          stageExposureArt.setAttribute("hidden", "");
+        } else {
+          stageExposureArt.removeAttribute("hidden");
+        }
+        stagePortrait.hidden = !stage.portrait;
+        if (stage.portrait) {
+          stagePortrait.className = "infected-portrait stage-portrait " + stage.portrait;
+        }
+        routeButtons.forEach(function (button, buttonIndex) {
+          if (buttonIndex === index) {
+            button.setAttribute("aria-current", "step");
+          } else {
+            button.removeAttribute("aria-current");
+          }
+        });
+        stageArt.setAttribute("aria-label", stage.portrait ? stage.title + " image from the supplied infection-stage poster" : "Bite and airborne spore infection routes");
+        if (stage.portrait) {
+          stagePortrait.setAttribute("aria-label", stage.title + " image from the supplied infection-stage poster");
+        }
+      }
+
+      routeButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          showStage(Number(button.dataset.stage));
+        });
+      });
+
+      var exposureCopy = document.getElementById("exposure-copy");
+      var exposureDetails = {
+        bite: "A bite from an infected is one of the game's routes of Cordyceps infection.",
+        spores: "Inhaling airborne spores in contaminated spaces is the other route shown in the games. Characters wear masks to avoid breathing them."
+      };
+      document.querySelectorAll(".exposure-button").forEach(function (button) {
+        button.addEventListener("click", function () {
+          document.querySelectorAll(".exposure-button").forEach(function (other) {
+            other.setAttribute("aria-pressed", String(other === button));
+          });
+          exposureCopy.textContent = exposureDetails[button.dataset.exposure];
+        });
+      });
+
+      document.querySelectorAll('input[type="file"][data-preview]').forEach(function (input) {
+        input.addEventListener("change", function () {
+          var file = input.files && input.files[0];
+          if (!file) return;
+          if (!file.type.startsWith("image/")) {
+            window.alert("Please choose an image file.");
+            input.value = "";
+            return;
+          }
+          var preview = document.getElementById(input.dataset.preview);
+          var prior = preview.querySelector("img");
+          if (prior && prior.dataset.objectUrl) URL.revokeObjectURL(prior.dataset.objectUrl);
+          var image = document.createElement("img");
+          image.alt = input.id === "file-camera" ? "User-selected Photo Mode screenshot" : "User-selected image";
+          image.src = URL.createObjectURL(file);
+          image.dataset.objectUrl = image.src;
+          preview.replaceChildren(image);
+        });
+      });
+
+      document.querySelectorAll("[data-load-image]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          var kind = button.dataset.loadImage;
+          var urlInput = document.getElementById("url-" + kind);
+          var url;
+          try {
+            url = new URL(urlInput.value);
+          } catch (error) {
+            window.alert("Enter a valid direct image URL.");
+            return;
+          }
+          if (url.protocol !== "https:" && url.protocol !== "http:") {
+            window.alert("Use an http or https image address.");
+            return;
+          }
+          var preview = document.getElementById("preview-" + kind);
+          var image = document.createElement("img");
+          image.alt = "Wiki or community image supplied by the visitor";
+          image.src = url.href;
+          image.addEventListener("error", function () {
+            image.remove();
+            window.alert("That image could not be loaded. Check that the URL points directly to an image.");
+          }, { once: true });
+          preview.replaceChildren(image);
+        });
+      });
+    }());
+  </script>
+</body>
+</html>
